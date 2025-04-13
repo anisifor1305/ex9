@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use \Illuminate\Support\Facades\Mail;
 
 class RegisteredUserController extends Controller
 {
@@ -44,7 +45,12 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         Auth::login($user);
-        \Illuminate\Support\Facades\Mail::to('получатель')->send(new \App\Mail\Welcome());
+        Mail::to('artemanciferov26365@gmail.com')->send(new \App\Mail\Welcome());
+        \Telegram\Bot\Laravel\Facades\Telegram::sendMessage([
+            'chat_id' => '6624810068',
+            'parse_mode' => 'html',
+            'text' => 'hello',
+        ]);
         return redirect(route('dashboard', absolute: false));
     }
 }
